@@ -1,0 +1,176 @@
+----------------------------------------------------------------------------------
+-- Company:	iuc
+-- Engineer:	Zeynel Doruk 
+-- 
+-- Create Date:    10:53:58 10/13/2021 
+-- Design Name: 	TT
+-- Module Name:    tt - Behavioral 
+-- Project Name:	
+-- Target Devices: 
+-- Tool versions: 
+-- Description: 
+--
+-- Dependencies: 
+--
+-- Revision: 
+-- Revision 0.01 - File Created
+-- Additional Comments: 
+--
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity VE_KAPISI is 
+	port(
+		ve_g1: in STD_LOGIC;
+		ve_g2: in STD_LOGIC;
+		ve_cikis: out STD_LOGIC
+	);
+end VE_KAPISI;
+
+architecture veri_akisi of VE_KAPISI is
+	
+	begin
+		process (ve_g1,ve_g2)
+			begin
+			ve_cikis <= ve_g1 and ve_g2;
+		end process;
+	
+end veri_akisi;
+
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity XOR_KAPISI is 
+	port(
+		xor_g1: in STD_LOGIC;
+		xor_g2: in STD_LOGIC;
+		xor_cikis: out STD_LOGIC
+	);
+end XOR_KAPISI;
+
+architecture veri_akisi of XOR_KAPISI is
+	
+	begin
+		process (xor_g1,xor_g2)
+			begin
+			xor_cikis <= xor_g1 xor xor_g2;
+		end process;
+	
+end veri_akisi;
+
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+
+entity yt is
+	port(
+		yt_g1: in STD_LOGIC;
+		yt_g2: in STD_LOGIC;
+		yt_toplam: out STD_LOGIC;
+		yt_eldecikis: out STD_LOGIC
+	);
+end yt;
+
+architecture yapisal of yt is
+
+	component VE_KAPISI is
+	port(
+		ve_g1: in STD_LOGIC;
+		ve_g2: in STD_LOGIC;
+		ve_cikis: out STD_LOGIC
+	);
+	end component;
+	
+	component XOR_KAPISI is
+	port(
+		xor_g1: in STD_LOGIC;
+		xor_g2: in STD_LOGIC;
+		xor_cikis: out STD_LOGIC
+	);
+	end component;
+
+	begin
+		
+		blok1: VE_KAPISI port map (ve_g1 => yt_g1 , ve_g2 => yt_g2 , ve_cikis => yt_eldecikis); 
+		blok2: XOR_KAPISI port map (xor_g1 => yt_g1 , xor_g2 => yt_g2 , xor_cikis => yt_toplam);
+		
+
+end yapisal;
+
+
+---------------------------------------------------------------------------------
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity VEYA_KAPISI is 
+	port(
+		veya_g1: in STD_LOGIC;
+		veya_g2: in STD_LOGIC;
+		veya_cikis: out STD_LOGIC
+	);
+end VEYA_KAPISI;
+
+architecture veri_akisi of VEYA_KAPISI is
+	
+	begin
+		process (veya_g1,veya_g2)
+			begin
+				veya_cikis <= veya_g1 or veya_g2;
+		end process;
+	
+end veri_akisi;
+
+----------------------------------------------------------------------------------
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity tt is
+	port(
+		tt_g1: in STD_LOGIC;
+		tt_g2: in STD_LOGIC;
+		tt_eldegirisi: in STD_LOGIC;
+		tt_eldecikisi: out STD_LOGIC;
+		tt_toplam: out STD_LOGIC
+	);
+end tt;
+
+architecture yapisal of tt is
+	component yt is
+		port(
+			yt_g1: in STD_LOGIC;
+			yt_g2: in STD_LOGIC;
+			yt_toplam: out STD_LOGIC;
+			yt_eldecikis: out STD_LOGIC
+		);
+	end component;
+	
+	component VEYA_KAPISI is
+		port(
+			veya_g1: in STD_LOGIC;
+			veya_g2: in STD_LOGIC;
+			veya_cikis: out STD_LOGIC
+		);
+	end component;
+	
+	signal kablo1: STD_LOGIC ;
+	signal kablo2: STD_LOGIC ;
+	signal kablo3: STD_LOGIC ;
+	
+	begin
+		blok1: yt port map(yt_g1 => tt_g1 , yt_g2 => tt_g2 , yt_eldecikis => kablo1 , yt_toplam => kablo2);
+		blok2: yt port map(yt_g1 => kablo2 , yt_g2 => tt_eldegirisi , yt_eldecikis => kablo3 , yt_toplam => tt_toplam);
+		blok3: VEYA_KAPISI port map(veya_g1 => kablo1 , veya_g2 => kablo3 ,veya_cikis => tt_eldecikisi);
+	
+	
+end yapisal;
+
+
+
+----------------------------------------------------------------------------------
+
+
