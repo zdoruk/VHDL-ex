@@ -1,0 +1,159 @@
+----------------------------------------------------------------------------------
+-- Company:  İUC
+-- Engineer: 		Zeynel Doruk
+-- 
+-- Create Date:    07:31:23 12/09/2021 
+-- Design Name: 
+-- Module Name:    4x1-MUX - Behavioral 
+-- Project Name: 
+-- Target Devices: 
+-- Tool versions: 
+-- Description: 
+--
+-- Dependencies: 
+--
+-- Revision: 
+-- Revision 0.01 - File Created
+-- Additional Comments: 
+--
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity VE_KAPISI is 
+	port(
+		ve_g1: in STD_LOGIC;
+		ve_g2: in STD_LOGIC;
+		ve_g3: in STD_LOGIC;
+		
+		ve_cikis: out STD_LOGIC
+	);
+end VE_KAPISI;
+
+architecture veri_akisi of VE_KAPISI is
+	begin
+		process (ve_g1,ve_g2,ve_g3)
+			begin
+				ve_cikis <= ve_g1 and ve_g2 and ve_g3;
+		end process;
+	
+end veri_akisi;
+
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity OR_KAPISI is
+	port(
+		or_g1: in STD_LOGIC;
+		or_g2: in STD_LOGIC;
+		or_g3: in STD_LOGIC;
+		or_g4: in STD_LOGIC;
+		
+		or_cikis: out STD_LOGIC
+	);
+end OR_KAPISI;
+
+architecture veri_akisi of OR_KAPISI is
+	begin
+		process(or_g1,or_g2,or_g3,or_g4)
+			begin
+				or_cikis <= or_g1 or or_g2 or or_g3 or or_g4;
+		end process;
+
+end veri_akisi;
+
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity NOT_KAPISI is
+	port(
+		not_giris: in STD_LOGIC;
+		
+		not_cikis: out STD_LOGIC
+	);
+end NOT_KAPISI;
+
+architecture veri_akisi of NOT_KAPISI is
+	begin
+		process(not_giris)
+			begin
+				not_cikis <= not not_giris ;
+		end process;
+
+end veri_akisi;
+
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity MUX is
+	port(
+		I0: in STD_LOGIC;
+		I1: in STD_LOGIC;
+		I2: in STD_LOGIC;
+		I3: in STD_LOGIC;
+		S0: in STD_LOGIC;
+		S1: in STD_LOGIC;
+		
+		Y: out STD_LOGIC
+	);
+end MUX;
+
+architecture yapisal of MUX is
+
+	component VE_KAPISI is
+		port(
+			ve_g1: in STD_LOGIC;
+			ve_g2: in STD_LOGIC;
+			ve_g3: in STD_LOGIC;
+		
+			ve_cikis: out STD_LOGIC
+		);
+	end component;
+	
+	component OR_KAPISI is
+		port(
+			or_g1: in STD_LOGIC;
+			or_g2: in STD_LOGIC;
+			or_g3: in STD_LOGIC;
+			or_g4: in STD_LOGIC;
+		
+			or_cikis: out STD_LOGIC
+		);
+	end component;
+	
+	component NOT_KAPISI is
+		port(
+			not_giris: in STD_LOGIC;
+		
+			not_cikis: out STD_LOGIC
+		);
+	end component;
+	
+	signal S0cikisi: STD_LOGIC ;
+	signal S1cikisi: STD_LOGIC ;
+	signal I0andcikisi: STD_LOGIC ;
+	signal I1andcikisi: STD_LOGIC ;
+	signal I2andcikisi: STD_LOGIC ;
+	signal I3andcikisi: STD_LOGIC ;
+	
+	begin
+		
+		blok5: NOT_KAPISI port map (not_giris => S1 , not_cikis => S1cikisi );
+		blok6: NOT_KAPISI port map (not_giris => S0 , not_cikis => S0cikisi );
+		
+		blok1: VE_KAPISI port map (ve_g1 => I0  , ve_g2 => S1cikisi , ve_g3 => S0cikisi , ve_cikis => I0andcikisi);
+		blok2: VE_KAPISI port map (ve_g1 => I1  , ve_g2 => S1cikisi , ve_g3 => S0cikisi , ve_cikis => I1andcikisi);
+		blok3: VE_KAPISI port map (ve_g1 => I2  , ve_g2 => S1cikisi , ve_g3 => S0cikisi , ve_cikis => I2andcikisi);
+		blok4: VE_KAPISI port map (ve_g1 => I3  , ve_g2 => S1cikisi , ve_g3 => S0cikisi , ve_cikis => I3andcikisi);	
+		
+		blok7: OR_KAPISI port map ( or_g1=>I0andcikisi , or_g2=>I1andcikisi , or_g3=>I2andcikisi , or_g4=>I3andcikisi, or_cikis => Y);
+		
+
+end yapisal;
+
+
+
+
