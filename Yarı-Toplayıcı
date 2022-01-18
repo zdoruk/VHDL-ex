@@ -1,0 +1,104 @@
+----------------------------------------------------------------------------------
+-- Company:	iuc
+-- Engineer:	Zeynel Doruk 
+-- 
+-- Create Date:    10:53:58 09/30/2021 
+-- Design Name: 	YT
+-- Module Name:    yt - Behavioral 
+-- Project Name:	1306180066 yari tooplayici ders 1
+-- Target Devices: 
+-- Tool versions: 
+-- Description: 
+--
+-- Dependencies: 
+--
+-- Revision: 
+-- Revision 0.01 - File Created
+-- Additional Comments: 
+--
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity VE_KAPISI is 
+	port(
+		ve_g1: in STD_LOGIC;
+		ve_g2: in STD_LOGIC;
+		ve_cikis: out STD_LOGIC
+	);
+end VE_KAPISI;
+
+architecture veri_akisi of VE_KAPISI is
+	
+	begin
+		process (ve_g1,ve_g2)
+			begin
+			ve_cikis <= ve_g1 and ve_g2;
+		end process;
+	
+end veri_akisi;
+
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity XOR_KAPISI is 
+	port(
+		xor_g1: in STD_LOGIC;
+		xor_g2: in STD_LOGIC;
+		xor_cikis: out STD_LOGIC
+	);
+end XOR_KAPISI;
+
+architecture veri_akisi of XOR_KAPISI is
+	
+	begin
+		process (xor_g1,xor_g2)
+			begin
+			xor_cikis <= xor_g1 xor xor_g2;
+		end process;
+	
+end veri_akisi;
+
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+
+entity yt is
+	port(
+		yt_g1: in STD_LOGIC;
+		yt_g2: in STD_LOGIC;
+		yt_toplam: out STD_LOGIC;
+		yt_eldecikis: out STD_LOGIC
+	);
+end yt;
+
+architecture yapisal of yt is
+
+	component VE_KAPISI is
+	port(
+		ve_g1: in STD_LOGIC;
+		ve_g2: in STD_LOGIC;
+		ve_cikis: out STD_LOGIC
+	);
+	end component;
+	
+	component XOR_KAPISI is
+	port(
+		xor_g1: in STD_LOGIC;
+		xor_g2: in STD_LOGIC;
+		xor_cikis: out STD_LOGIC
+	);
+	end component;
+
+	begin
+		
+		blok1: VE_KAPISI port map (ve_g1 => yt_g1 , ve_g2 => yt_g2 , ve_cikis => yt_eldecikis); 
+		blok2: XOR_KAPISI port map (xor_g1 => yt_g1 , xor_g2 => yt_g2 , xor_cikis => yt_toplam);
+		
+
+end yapisal;
+
+
+
